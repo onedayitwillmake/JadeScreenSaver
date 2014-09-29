@@ -139,26 +139,26 @@ void JadeFlower::mouseDown( MouseEvent event ) {
 	static GridPoint* currentStartPoint = NULL;
 	static ci::ColorA flowerColor;
 	static float hue = ci::Rand::randFloat();
-    static DIRECTION newDirection = DIRECTION::NORTH_WEST;
-
     
 	if( currentStartPoint == NULL ) {
 		currentStartPoint = _grid->getCenterGridPoint();
-		flowerColor = ci::ColorA( ci::CM_HSV, hue, 1, 1, 0.60f );
-	} else {
-		GridPoint* lastPoint = currentStartPoint;
-		int i = 0;
-		currentStartPoint = NULL;
-		while(currentStartPoint == NULL) {
-            newDirection = (DIRECTION)((newDirection+1) % ((int)DIRECTION::SOUTH_WEST+1));
-            GridPoint* possiblePoint = _grid->getGridPointNeighbor(lastPoint, newDirection );
-            currentStartPoint = possiblePoint;
-			i++;
-		}
-
-		hue = ci::math<float>::fmod(hue + ci::randFloat(0.01f, 0.05f), 1.0f );
-		flowerColor = ci::ColorA( ci::CM_HSV, hue, 1, 1, 0.60f );
+		ci::ColorA( ci::CM_HSV, hue, 1, 1, 0.60f );
 	}
+    
+//    GetDirection( currentPoint )
+
+//    GridPoint* lastPoint = currentStartPoint;
+//    int i = 0;
+//    currentStartPoint = NULL;
+//    while(currentStartPoint == NULL) {
+//        newDirection = (DIRECTION)((newDirection+1) % ((int)DIRECTION::SOUTH_WEST+1));
+//        GridPoint* possiblePoint = _grid->getGridPointNeighbor(lastPoint, newDirection );
+//        currentStartPoint = possiblePoint;
+//        i++;
+//    }
+//    
+//    hue = ci::math<float>::fmod(hue + ci::randFloat(0.01f, 0.05f), 1.0f );
+//    flowerColor = ci::ColorA( ci::CM_HSV, hue, 1, 1, 0.60f );
   
     
 //    currentStartPoint->addStartPetal( newDirection, <#Petal *petal#>)
@@ -195,7 +195,8 @@ void JadeFlower::renderGrid( cairo::Context &ctx ) {
     int rowCount = _grid->getRowCount();
 
     ctx.newPath();
-    ctx.setSource( Color( 0.8, 0.8, 0.8 ) );
+//    ctx.setSource( Color( 0.8, 0.8, 0.8 ) );
+    ctx.setSource( Color( 0.1, 0.1, 0.1 ) );
     for( int x = 0; x < columnCount; x++ ) {
         for( int y = 0; y < rowCount; y++ ) {
             GridPoint* point = _grid->getGridPointAt(x, y);
