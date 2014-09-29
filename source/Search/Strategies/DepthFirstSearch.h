@@ -16,13 +16,16 @@
 
 namespace search {
     class DepthFirstSearch {
+    public:
         DepthFirstSearch(){
-            
+            frontier = new Sequence();
         }
-        ~DepthFirstSearch(){
-        }
+        ~DepthFirstSearch(){}
         
         void advance( State* currentNode, Grid* gridModel, Sequence* sequence );
+        void clear() { frontier->clear(); }
+        
+        Sequence* frontier;
     };
 }
 #endif /* defined(__CircleMandala__DepthFirstSearch__) */
