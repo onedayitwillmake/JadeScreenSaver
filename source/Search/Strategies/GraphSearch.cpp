@@ -20,15 +20,15 @@ namespace search {
     }
     
     void GraphSearch::advance( State* currentNode, Grid* gridModel, Sequence* sequence ) {
-        std::array<Action, 8> frontierEdges = {
+        std::array<Action, 6> frontierEdges = {
             Action(currentNode->gridPoint, GRID_DIRECTION::NORTH_WEST),
             Action(currentNode->gridPoint, GRID_DIRECTION::NORTH),
             Action(currentNode->gridPoint, GRID_DIRECTION::NORTH_EAST),
             Action(currentNode->gridPoint, GRID_DIRECTION::SOUTH_EAST),
             Action(currentNode->gridPoint, GRID_DIRECTION::SOUTH),
             Action(currentNode->gridPoint, GRID_DIRECTION::SOUTH_WEST),
-            Action(currentNode->gridPoint, GRID_DIRECTION::EAST),
-            Action(currentNode->gridPoint, GRID_DIRECTION::WEST),
+//            Action(currentNode->gridPoint, GRID_DIRECTION::EAST),
+//            Action(currentNode->gridPoint, GRID_DIRECTION::WEST),
         };
         
 //        std::sort(frontierEdges.begin(), frontierEdges.end(), [&]( const Action* actionA, const Action* actionA) {
@@ -50,9 +50,15 @@ namespace search {
             if( aState->gridPoint == NULL ) continue;                                       // Invalid state
             if( _frontier->containsState( aState ) ) continue;                              // Already in frontier
             if( sequence->containsState( aState ) ) continue;                               // Already in sequence
-            if( aState->gridPoint->hasStartPetalFacingDirection( anAction.direction ) ) {   // has petal there
+            if( aState->gridPoint->hasEndPetalFacingDirection( anAction.direction ) ) {   // has petal there
+                std::cout << "SkipA" << std::endl;
                 continue;
             }
+            if( aState->gridPoint->hasStartPetalFacingDirection( anAction.direction ) ) {   // has petal there
+                std::cout << "SkipBa" << std::endl;
+                continue;
+            }
+
             if( !aState->gridPoint->isPermeable() ) {   // has petal there
                 continue;
             }

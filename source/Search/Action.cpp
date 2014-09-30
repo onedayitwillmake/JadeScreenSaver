@@ -12,6 +12,9 @@
 
 namespace search {
     State* Action::execute( State* state, Grid* grid ) {
-        return new State( grid->getGridPointNeighbor( start, direction ), grid );
+        State* newState = new State( grid->getGridPointNeighbor( start, direction ), grid );
+        newState->direction = direction;
+        
+        return newState;
     }
 }

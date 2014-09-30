@@ -53,6 +53,9 @@ public:
 	vector<Vec2f>       endPoints;
 	vector<Petal>		m_petals;
     
+    float hue;
+    ci::ColorA flowerColor;
+    
     // SEARCH
     search::Agent* _agent;
 };
@@ -69,6 +72,10 @@ void JadeFlower::setup(){
     Constants::init();
     setupGUI();
     setupAgent();
+    
+    
+    hue = ci::Rand::randFloat();
+    flowerColor = ci::ColorA( ci::CM_HSV, hue, 1, 1, 0.60f );
 }
 
 void JadeFlower::setupGUI() {
@@ -116,7 +123,9 @@ void JadeFlower::keyDown( KeyEvent event )
 //		m_petals.clear();
 	}
     else if( event.getChar() == 'a' ) {
+
         _agent->advance();
+//        _agent->advance();
 //        std::cout << std::endl;
         
         for(auto& aState : _agent->getSequence()->_states ) {
@@ -124,6 +133,43 @@ void JadeFlower::keyDown( KeyEvent event )
 //                std::cout << aState->gridPoint->gridPosition << std::endl;
             }
         }
+        
+        GridPoint* startPoint = _agent->getCurrentGridPoint();
+        // Draw all the petals around this point
+        for( int i = 0; i <= (int)GRID_DIRECTION::SOUTH_WEST; i++ ) {
+            GridPoint* endPoint = _grid->getGridPointNeighbor(startPoint, (GRID_DIRECTION)i );
+            if( endPoint == NULL ) continue;
+
+            Petal* aPetal = new Petal( startPoint, endPoint, (GRID_DIRECTION)i, flowerColor );
+            m_petals.push_back( *aPetal );
+            
+            startPoint->addEndPetal((GRID_DIRECTION)i, aPetal);
+        }
+
+//        for(auto& aState : _agent->getStrategy()->_frontier->_states ) {
+//            if( aState->gridPoint != NULL ) {
+//                GridPoint* endPoint = aState->gridPoint;
+//                if( endPoint->hasEndPetalFacingDirection(aState->direction) ) {
+//                    continue;
+//                }
+//                Petal *aPetal = new Petal( startPoint, endPoint, aState->direction, flowerColor );
+//                m_petals.push_back( *aPetal );
+//                endPoint->addEndPetal(aState->direction, aPetal);
+//
+////                ctx.circle( point->pixelPosition.x, point->pixelPosition.y, 4);
+////                ctx.fill();
+//            }
+//        }
+        
+                _agent->advance();
+        hue = ci::math<float>::fmod(hue + ci::randFloat(0.001f, 0.01f), 1.0f );
+        flowerColor = ci::ColorA( ci::CM_HSV, hue, 1, 1, 0.60f );
+
+//        GridPoint* endPoint = _agent->getCurrentGridPoint();//->getGridPointNeighbor(currentPoint, (DIRECTION)i );
+//        if( endPoint == NULL ) continue;
+
+//        Petal aPetal = Petal( currentPoint, endPoint, (DIRECTION)i, flowerColor );
+//        m_petals.push_back( aPetal );
 
     }
 	else if( event.getChar() == 's' ) {
@@ -169,12 +215,12 @@ void JadeFlower::mouseMove( MouseEvent event ) {
 void JadeFlower::mouseDown( MouseEvent event ) {
 
 	static GridPoint* currentStartPoint = NULL;
-	static ci::ColorA flowerColor;
-	static float hue = ci::Rand::randFloat();
+//	static ci::ColorA flowerColor;
+//	static float hue = ci::Rand::randFloat();
     
 	if( currentStartPoint == NULL ) {
 		currentStartPoint = _grid->getCenterGridPoint();
-		ci::ColorA( ci::CM_HSV, hue, 1, 1, 0.60f );
+//		ci::ColorA( ci::CM_HSV, hue, 1, 1, 0.60f );
 	}
     
 //    GetDirection( currentPoint )
@@ -312,7 +358,11 @@ void JadeFlower::update(){
 	}
     
 	forceFocus();
+
 //    _agent->advance();
+    if( _agent->isAtGoal() ) {
+        resetGoal();
+    }
 }
 
 void JadeFlower::resetGoal() {
@@ -339,7 +389,7 @@ void JadeFlower::draw() {
 	renderBackground( ctx );
 	renderGrid( ctx );
 	renderScene( ctx );
-    renderSearch( ctx );
+//    renderSearch( ctx );
 
 	// Draw the interface
 //	if( getElapsedSeconds() > 2 ) // After 2 seconds, resume normal behavior

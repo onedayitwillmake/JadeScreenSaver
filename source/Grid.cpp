@@ -64,8 +64,8 @@ ci::Vec2i Grid::getDirectionalOffset( GRID_DIRECTION cardinalDirection ) {
 		case GRID_DIRECTION::NORTH_EAST:    offset = ci::Vec2i( 1, -1); break;
 		case GRID_DIRECTION::SOUTH_EAST:	offset = ci::Vec2i( 1, 1); break;
 		case GRID_DIRECTION::SOUTH:         offset = ci::Vec2i( 0, 2); break;
-        case GRID_DIRECTION::EAST:          offset = ci::Vec2i( 1, 0); break;
-        case GRID_DIRECTION::WEST:          offset = ci::Vec2i( -1, 0); break;
+//        case GRID_DIRECTION::EAST:          offset = ci::Vec2i( 1, 0); break;
+//        case GRID_DIRECTION::WEST:          offset = ci::Vec2i( -1, 0); break;
 		case GRID_DIRECTION::SOUTH_WEST:	offset = ci::Vec2i(-1, 1); break;
 		case GRID_DIRECTION::NORTH_WEST:    offset = ci::Vec2i(-1, -1); break;
 		default:

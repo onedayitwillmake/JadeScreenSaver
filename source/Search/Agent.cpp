@@ -64,9 +64,9 @@ namespace search {
     
     bool Agent::isAtGoal(){
         int distA = (_sequence->getLastState()->gridPoint->gridPosition - _goal->gridPoint->gridPosition).lengthSquared();
-        std::cout << "Distance:" << distA << std::endl;
+//        std::cout << "Distance:" << distA << std::endl;
         
-//        return distA <= 1;
+        return distA <= 1;
         
         return _goal->isEqual( *_sequence->getLastState() );
     }

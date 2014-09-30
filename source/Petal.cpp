@@ -79,7 +79,7 @@ void Petal::makePath( ci::cairo::Context &ctx ) {
 }
 
 void Petal::draw( ci::cairo::Context &ctx ) {
-//	m_color.a *= fadeSpeed;
+	m_color.a *= fadeSpeed;
 
 	ctx.setSource( m_color );
 	makePath( ctx );

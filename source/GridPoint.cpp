@@ -11,7 +11,7 @@
 #include "cinder/Rand.h"
 
 GridPoint::GridPoint(ci::Vec2i aGridPosition, ci::Vec2f aPixelPosition ):gridPosition( aGridPosition ), pixelPosition( aPixelPosition ), isBeingUsed( false ) {
-    _isPermeable = ci::randFloat() < 0.75f;
+    _isPermeable = true;//ci::randFloat() < -0.75f;
 }
 void GridPoint::addEndPetal( GRID_DIRECTION direction, Petal* petal ) {
     ends[direction] = petal;
