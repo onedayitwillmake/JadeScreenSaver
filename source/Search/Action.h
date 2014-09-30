@@ -20,9 +20,9 @@ namespace search {
     
     class Action {
     public:
-        Action( GridPoint* aStart, DIRECTION aDirection ):direction(aDirection), start(aStart){ };
+        Action( GridPoint* aStart, GRID_DIRECTION aDirection ):direction(aDirection), start(aStart){ };
         
-        DIRECTION direction;
+        GRID_DIRECTION direction;
         GridPoint* start;
         
         State* execute( State* state, Grid* grid );

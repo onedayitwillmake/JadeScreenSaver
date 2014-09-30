@@ -19,8 +19,8 @@ namespace search {
     }
     
     bool Sequence::containsState( State* stateToCompare ) {
-        for (auto& aState : _stateSequences ) {
-            if( aState == stateToCompare ) {
+        for (auto& aState : _states ) {
+            if( aState->isEqual(*stateToCompare) ) {
                 return true;
             }
         }
@@ -29,39 +29,44 @@ namespace search {
     }
     
     void Sequence::sort() {
-        std::sort( _stateSequences.begin(), _stateSequences.end(), manhattan_distance );
+
+        std::sort(_states.begin(), _states.end(), [&]( const State* stateA, const State* stateB) {
+            int distA = (stateA->gridPoint->gridPosition - goal->gridPoint->gridPosition).lengthSquared();
+            int distB = (stateB->gridPoint->gridPosition - goal->gridPoint->gridPosition).lengthSquared();
+            return distA > distB;
+        });
     }
     
     void Sequence::clear() {
-        _stateSequences.clear();
+        _states.clear();
     }
     
     
     void Sequence::pushState( State* aState ) {
-        _stateSequences.push_back( aState );
+        _states.push_back( aState );
     }
     
     void Sequence::insertAtHead( State* aState ) {
-        _stateSequences.insert( _stateSequences.begin(), aState );
+        _states.insert( _states.begin(), aState );
     }
     
     State*  Sequence::popState() {
-        if( _stateSequences.empty() ) {
+        if( _states.empty() ) {
             return NULL;
         }
         
-        State* lastElement = _stateSequences.back();
-        _stateSequences.pop_back();
+        State* lastElement = _states.back();
+        _states.pop_back();
         
         return lastElement;
     }
     
     State* Sequence::getLastState() {
-        if( _stateSequences.empty() ) {
+        if( _states.empty() ) {
             return NULL;
         }
         
-        return _stateSequences.back();
+        return _states.back();
     }
     
 }

@@ -18,7 +18,7 @@ class Grid;
 
 class Petal {
 public:
-	Petal( GridPoint* startPoint, GridPoint* endPoint, DIRECTION direction, ci::ColorA color );
+	Petal( GridPoint* startPoint, GridPoint* endPoint, GRID_DIRECTION direction, ci::ColorA color );
 	virtual ~Petal();
 
     void            destroy();
@@ -32,7 +32,7 @@ public:
 private:
 	GridPoint*	m_startPoint;
 	GridPoint*	m_endPoint;
-	DIRECTION	m_direction;
+	GRID_DIRECTION	m_direction;
     ci::ColorA  m_color;
 
 	// Caching

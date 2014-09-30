@@ -10,11 +10,12 @@
 #include "Grid.h"
 #include "GridPoint.h"
 namespace search {
-    BOOL State::operator==( const State &other ) const {
+    BOOL State::isEqual( State &other ) {
+//        std::cout << other.gridPoint->gridPosition << " : " << other.gridPoint->gridPosition << std::endl;
         return other.gridPoint == gridPoint;
     }
     
-    BOOL State::operator!=( const State &other ) const {
-        return !(*this == other);
-    }
+//    BOOL State::operator!=( const State &other ) const {
+//        return !(*this == other);
+//    }
 }

@@ -17,13 +17,11 @@
 namespace search {
     class DepthFirstSearch {
     public:
-        DepthFirstSearch(){
-            frontier = new Sequence();
-        }
+        DepthFirstSearch();
         ~DepthFirstSearch(){}
         
         void advance( State* currentNode, Grid* gridModel, Sequence* sequence );
-        void clear() { frontier->clear(); }
+        void clear() { frontier->clear();}
         
         Sequence* frontier;
     };

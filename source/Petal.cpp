@@ -19,7 +19,7 @@
 
 float mRadius = 50.0f;
 
-Petal::Petal( GridPoint* startPoint, GridPoint* endPoint, DIRECTION direction, ci::ColorA color ) {
+Petal::Petal( GridPoint* startPoint, GridPoint* endPoint, GRID_DIRECTION direction, ci::ColorA color ) {
 	m_endPoint = endPoint;
 	m_startPoint = startPoint;
 	m_direction = direction;
@@ -105,7 +105,7 @@ ci::Vec2f Petal::getEndPoint( float petalAngle ) {
 
 float Petal::getAngle() {
 
-    return ( (float)m_direction / ((float)DIRECTION::SOUTH_WEST+1) ) * 2 * M_PI + ci::toRadians(90.0f);
+    return ( (float)m_direction / ((float)GRID_DIRECTION::SOUTH_WEST+1) ) * 2 * M_PI + ci::toRadians(90.0f);
 }
 
 

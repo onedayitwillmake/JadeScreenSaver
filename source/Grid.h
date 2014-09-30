@@ -22,13 +22,13 @@ public:
     void createGrid();
 
     GridPoint* getGridPointAt(int x, int y);
-    GridPoint* getGridPointNeighbor( GridPoint* point, DIRECTION offset );
+    GridPoint* getGridPointNeighbor( GridPoint* point, GRID_DIRECTION offset );
     GridPoint* getCenterGridPoint();
     
     int getColumnCount() const { return dimensions.x / spacing.x + 1; }
     int getRowCount() const { return dimensions.y / spacing.y + 1; }
 
-    ci::Vec2i getDirectionalOffset( DIRECTION cardinalDirection );
+    ci::Vec2i getDirectionalOffset( GRID_DIRECTION cardinalDirection );
 private:
     ci::Vec2i dimensions;
     ci::Vec2i spacing;

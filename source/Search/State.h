@@ -22,7 +22,7 @@ namespace search {
         GridPoint*  gridPoint;
         Grid*       grid;
         
-        BOOL        operator==( const State &other ) const;
+        BOOL        isEqual( State &other );
         BOOL        operator!=( const State &other ) const;
     };
 }

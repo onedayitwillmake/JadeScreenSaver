@@ -27,10 +27,10 @@ namespace search {
         void    pushState( State* aState );
         void    insertAtHead( State* aState );
         State*  popState();
-        State* getLastState();
+        State*  getLastState();
         
-    private:
-        std::vector<State*> _stateSequences;
+        State*  goal;
+        std::vector<State*> _states;
     };
 }
 #endif /* defined(__CircleMandala__Sequence__) */

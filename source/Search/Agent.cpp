@@ -8,6 +8,7 @@
 
 #include "Agent.h"
 #include "DepthFirstSearch.h"
+#include "GraphSearch.h"
 
 namespace search {
     Agent::Agent( State* anInitialState, State* aGoal, Grid* grid ) {
@@ -18,7 +19,9 @@ namespace search {
         _sequence = new Sequence();
         _sequence->pushState( _initialState );
         
-        searchStrategy = new DepthFirstSearch();
+        _sequence->goal = aGoal;
+        searchStrategy = new GraphSearch();
+        searchStrategy->_frontier->goal = aGoal;
     }
     
     void Agent::advance() {
@@ -29,7 +32,8 @@ namespace search {
         }
         
         searchStrategy->advance(currentNode, _worldState, _sequence);
-        searchStrategy->frontier->sort();
+//        searchStrategy->_frontier->sort();
+//        _sequence->sort();
     }
     
     
@@ -48,10 +52,22 @@ namespace search {
         _sequence->clear();
         delete _sequence;
         
+        _goal = aGoal;
+        
         _sequence = new Sequence();
         _sequence->pushState( _initialState );
+        _sequence->goal = aGoal;
         
-        _goal = aGoal;
         searchStrategy->clear();
+        searchStrategy->_frontier->goal = aGoal;
+    }
+    
+    bool Agent::isAtGoal(){
+        int distA = (_sequence->getLastState()->gridPoint->gridPosition - _goal->gridPoint->gridPosition).lengthSquared();
+        std::cout << "Distance:" << distA << std::endl;
+        
+//        return distA <= 1;
+        
+        return _goal->isEqual( *_sequence->getLastState() );
     }
 }

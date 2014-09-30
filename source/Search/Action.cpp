@@ -12,11 +12,6 @@
 
 namespace search {
     State* Action::execute( State* state, Grid* grid ) {
-        /*
-         int column = (int)initialState.getSquare()._gridPosition.x + directionX;
-         int row = (int)initialState.getSquare()._gridPosition.y + directionY;
-         return new State( worldState.getSquareAtGridPosition(column, row), worldState);
-         */
         return new State( grid->getGridPointNeighbor( start, direction ), grid );
     }
 }

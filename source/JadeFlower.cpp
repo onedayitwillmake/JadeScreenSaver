@@ -17,6 +17,8 @@
 #include "Flower.h"
 #include "Petal.h"
 #include "Grid.h"
+#include "Search/Agent.h"
+#include "State.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -30,14 +32,17 @@ public:
 	void prepareSettings( Settings* );
     void setup();
     void setupGUI();
+    void setupAgent();
 	void mouseDown( MouseEvent event );
 	void mouseMove( MouseEvent event );
 	void keyDown( KeyEvent event );
 	void renderBackground( cairo::Context &ctx );
 	void renderScene( cairo::Context &ctx );
     void renderGrid( cairo::Context &ctx );
+    void renderSearch( cairo::Context &ctx );
 	void draw();
 	void update();
+    void resetGoal();
 	void forceFocus();
 
 //	mowa::sgui::SimpleGUI*	_gui;
@@ -47,11 +52,14 @@ public:
     Grid*               	_grid;
 	vector<Vec2f>       endPoints;
 	vector<Petal>		m_petals;
+    
+    // SEARCH
+    search::Agent* _agent;
 };
 
 void JadeFlower::prepareSettings( Settings *settings ) {
 	settings->setAlwaysOnTop( true );
-	settings->setFrameRate( 60.0f );
+	settings->setFrameRate( 5 );
 }
 void JadeFlower::setup(){
     ci::Vec2i spacing = ci::Vec2i(44, 26);
@@ -60,6 +68,7 @@ void JadeFlower::setup(){
 
     Constants::init();
     setupGUI();
+    setupAgent();
 }
 
 void JadeFlower::setupGUI() {
@@ -80,6 +89,15 @@ void JadeFlower::setupGUI() {
 //	mParams->addParam("c1 radius", &Constants::Petal::C2_RADIUS_SCALE, "min=0.0 max=1.0");
 }
 
+void JadeFlower::setupAgent() {
+    GridPoint* initialPoint = _grid->getCenterGridPoint();
+    search::State* initialState = new search::State(initialPoint, _grid);
+    GridPoint* goal = _grid->getGridPointAt(5, 2);
+    search::State* goalState = new search::State(goal, _grid);
+    
+    _agent = new search::Agent( initialState, goalState, _grid );
+}
+
 void JadeFlower::forceFocus(){
 	// This is a work hacky work around, to force our application to be above other windows when launched
 	static bool hasBecomeFirstResponder = false;
@@ -97,6 +115,17 @@ void JadeFlower::keyDown( KeyEvent event )
 	else if( event.getChar() == 'x' ) {
 //		m_petals.clear();
 	}
+    else if( event.getChar() == 'a' ) {
+        _agent->advance();
+//        std::cout << std::endl;
+        
+        for(auto& aState : _agent->getSequence()->_states ) {
+            if( aState->gridPoint != NULL ) {
+//                std::cout << aState->gridPoint->gridPosition << std::endl;
+            }
+        }
+
+    }
 	else if( event.getChar() == 's' ) {
 //		cairo::Context ctx( cairo::SurfaceSvg( getHomeDirectory() / "CairoBasicShot.svg", getWindowWidth(), getWindowHeight() ) );
 //		renderScene( ctx );
@@ -118,6 +147,9 @@ void JadeFlower::keyDown( KeyEvent event )
     }
     else if( event.getChar() == 'g' ) {
 //		_gui->setEnabled( !_gui->isEnabled() );
+    }
+    else if( event.getChar() == 'r' ) {
+        resetGoal();
     }
 }
 
@@ -195,11 +227,13 @@ void JadeFlower::renderGrid( cairo::Context &ctx ) {
     int rowCount = _grid->getRowCount();
 
     ctx.newPath();
-//    ctx.setSource( Color( 0.8, 0.8, 0.8 ) );
-    ctx.setSource( Color( 0.1, 0.1, 0.1 ) );
+    ctx.setSource( Color( 0.5, 0.5, 0.5 ) );
+//    ctx.setSource( Color( 0.1, 0.1, 0.1 ) );
     for( int x = 0; x < columnCount; x++ ) {
         for( int y = 0; y < rowCount; y++ ) {
             GridPoint* point = _grid->getGridPointAt(x, y);
+            if( point->isPermeable() ) continue;
+            
             ctx.circle( point->pixelPosition.x, point->pixelPosition.y, 2);
         }
     }
@@ -213,6 +247,60 @@ void JadeFlower::renderScene( cairo::Context &ctx ) {
 	}
 }
 
+void JadeFlower::renderSearch(cairo::Context &ctx) {
+    
+    ctx.newPath();
+    ctx.setSource( ColorA( 1.0, 0, 0, 0.1f ) );
+//    ctx.moveTo( _agent->getInitialState()->gridPoint->pixelPosition );
+    
+    int i = 0;
+    //gridPosition
+    GridPoint* last = NULL;
+    for(auto& aState : _agent->getSequence()->_states ) {
+        if( aState->gridPoint != NULL ) {
+            if( last != NULL && last->gridPosition.distanceSquared( aState->gridPoint->gridPosition ) > (4) ) {
+//                ctx.newSubPath();
+//                ctx.setSource( ColorA( 1.0f, 0.0, 1.0f, 0.4f ) );
+//                ctx.moveTo( aState->gridPoint->pixelPosition );
+            }
+            
+            ctx.lineTo( aState->gridPoint->pixelPosition );
+            last = aState->gridPoint;
+        }
+        
+        i++;
+    }
+//    ctx.closePath();
+    ctx.stroke();
+    
+    
+    ctx.newPath();
+    ctx.setSource( Color( 0.0, 0.8, 0.8 ) );
+
+    // Agent location
+    GridPoint* point = _agent->getCurrentGridPoint();
+    ctx.circle( point->pixelPosition.x, point->pixelPosition.y, 5);
+    ctx.fill();
+    
+    // GOAL
+    ctx.setSource( Color( 1.0f, 0.0, 0.0 ) );
+    point = _agent->getGoal()->gridPoint;
+    ctx.circle( point->pixelPosition.x, point->pixelPosition.y, 5);
+    ctx.fill();
+    
+    // FRONTIER
+    ctx.newPath();
+    ctx.setSource( ColorA( 1.0, 1.0, 0, 1.0f ) );
+    //gridPosition
+    for(auto& aState : _agent->getStrategy()->_frontier->_states ) {
+        if( aState->gridPoint != NULL ) {
+            GridPoint* point = aState->gridPoint;
+            ctx.circle( point->pixelPosition.x, point->pixelPosition.y, 4);
+            ctx.fill();
+        }
+    }
+}
+
 void JadeFlower::update(){
     for( vector<Petal>::iterator petal = m_petals.begin(); petal != m_petals.end(); ) {
         if( petal->getColor().a < 0.02f ) {
@@ -224,7 +312,26 @@ void JadeFlower::update(){
 	}
     
 	forceFocus();
+//    _agent->advance();
 }
+
+void JadeFlower::resetGoal() {
+//    GridPoint* initialPoint = _grid->getCenterGridPoint();
+//    search::State* initialState = new search::State(initialPoint, _grid);
+    GridPoint* goal = NULL;
+    while( goal == NULL ) {
+        int x = ci::randInt(0, _grid->getColumnCount());
+        int y = ci::randInt(0, _grid->getColumnCount());
+        GridPoint* potentialGoal = _grid->getGridPointAt(x,y);
+        
+        if( potentialGoal->isPermeable() ) {
+            goal = potentialGoal;
+        }
+    }
+    
+    _agent->setGoal( new search::State(goal, _grid ) );
+}
+
 void JadeFlower::draw() {
 //	gl::clear( ci::ColorA::white())
 	// render the scene straight to the window
@@ -232,6 +339,7 @@ void JadeFlower::draw() {
 	renderBackground( ctx );
 	renderGrid( ctx );
 	renderScene( ctx );
+    renderSearch( ctx );
 
 	// Draw the interface
 //	if( getElapsedSeconds() > 2 ) // After 2 seconds, resume normal behavior

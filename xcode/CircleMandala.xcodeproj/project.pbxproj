@@ -25,6 +25,7 @@
 		18109D2819CF96BE00CB2A84 /* Sequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18109D1A19CF96BE00CB2A84 /* Sequence.cpp */; };
 		18109D2919CF96BE00CB2A84 /* State.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18109D1C19CF96BE00CB2A84 /* State.cpp */; };
 		18109D2E19CFB71B00CB2A84 /* DepthFirstSearch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18109D2C19CFB71B00CB2A84 /* DepthFirstSearch.cpp */; };
+		184B4AAC19DAF41B0029B204 /* GraphSearch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 184B4AAA19DAF41B0029B204 /* GraphSearch.cpp */; };
 		4828DB95594641EB863E7AFB /* Cairo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4A3C0F460DF4571AC5DD213 /* Cairo.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
@@ -67,6 +68,8 @@
 		18109D2A19CFAC9900CB2A84 /* Comparators.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Comparators.h; sourceTree = "<group>"; };
 		18109D2C19CFB71B00CB2A84 /* DepthFirstSearch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DepthFirstSearch.cpp; path = Strategies/DepthFirstSearch.cpp; sourceTree = "<group>"; };
 		18109D2D19CFB71B00CB2A84 /* DepthFirstSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DepthFirstSearch.h; path = Strategies/DepthFirstSearch.h; sourceTree = "<group>"; };
+		184B4AAA19DAF41B0029B204 /* GraphSearch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GraphSearch.cpp; path = Strategies/GraphSearch.cpp; sourceTree = "<group>"; };
+		184B4AAB19DAF41B0029B204 /* GraphSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GraphSearch.h; path = Strategies/GraphSearch.h; sourceTree = "<group>"; };
 		210875C2BF5B48CE9ECD0AEF /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -177,6 +180,8 @@
 			children = (
 				18109D2C19CFB71B00CB2A84 /* DepthFirstSearch.cpp */,
 				18109D2D19CFB71B00CB2A84 /* DepthFirstSearch.h */,
+				184B4AAA19DAF41B0029B204 /* GraphSearch.cpp */,
+				184B4AAB19DAF41B0029B204 /* GraphSearch.h */,
 			);
 			name = Strategies;
 			sourceTree = "<group>";
@@ -342,6 +347,7 @@
 				18109D2919CF96BE00CB2A84 /* State.cpp in Sources */,
 				18109D2819CF96BE00CB2A84 /* Sequence.cpp in Sources */,
 				18109D2E19CFB71B00CB2A84 /* DepthFirstSearch.cpp in Sources */,
+				184B4AAC19DAF41B0029B204 /* GraphSearch.cpp in Sources */,
 				18109D2219CF96BE00CB2A84 /* JadeFlower.cpp in Sources */,
 				18109D2319CF96BE00CB2A84 /* Petal.cpp in Sources */,
 				18109D1E19CF96BE00CB2A84 /* Constants.cpp in Sources */,

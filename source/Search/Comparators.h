@@ -12,6 +12,7 @@
 #include "State.h"
 #include "Grid.h"
 #include "GridPoint.h"
+#include "cinder/Rand.h"
 
 namespace search {
 //    struct manhattan_distance {
@@ -30,8 +31,8 @@ namespace search {
          }
          */
         // TODO - SET GOAL SQUARE TO RANDOM UNUSED SQUARE ACCORDING TO GRID
-        bool manhattan_distance(const State* stateA, const State* stateB) {
-            return stateA->gridPoint->gridPosition.x < stateB->gridPoint->gridPosition.x;
+        bool manhattan_distance(const State* goal, const State* stateA, const State* stateB) {
+            return false;
         }
 }
 #endif

@@ -16,22 +16,23 @@
 class Petal;
 class GridPoint {
 public:
-    GridPoint( ci::Vec2i aGridPosition, ci::Vec2f aPixelPosition ):
-    gridPosition( aGridPosition ), pixelPosition( aPixelPosition ), isBeingUsed( false ) {}
-    
+    GridPoint( ci::Vec2i aGridPosition, ci::Vec2f aPixelPosition );
     // Properties
     bool        isBeingUsed;
     ci::Vec2i   gridPosition;
     ci::Vec2f   pixelPosition;
     
     
-    void    addStartPetal(  DIRECTION direction, Petal* petal );
-    bool    hasStartPetalFacingDirection(DIRECTION aDirection);
+    void    addStartPetal(  GRID_DIRECTION direction, Petal* petal );
+    bool    hasStartPetalFacingDirection(GRID_DIRECTION aDirection);
     
-    void    addEndPetal(  DIRECTION direction, Petal* petal );
-    bool    hasEndPetalFacingDirection(DIRECTION aDirection);
+    void    addEndPetal(  GRID_DIRECTION direction, Petal* petal );
+    bool    hasEndPetalFacingDirection(GRID_DIRECTION aDirection);
+    
+    bool    isPermeable();
 private:
-    std::map<DIRECTION, Petal*> starts;
-    std::map<DIRECTION, Petal*> ends;
+    std::map<GRID_DIRECTION, Petal*> starts;
+    std::map<GRID_DIRECTION, Petal*> ends;
+    bool        _isPermeable;
 };
 #endif /* defined(__CircleMandala__GridPoint__) */

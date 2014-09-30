@@ -17,6 +17,7 @@
 #include "State.h"
 #include "Grid.h"
 #include "DepthFirstSearch.h"
+#include "GraphSearch.h"
 
 namespace search {
     class Agent {
@@ -27,12 +28,17 @@ namespace search {
         void            advance();
         void            setGoal( State* aGoal );
         bool            isAtGoal();
+        
+        Sequence*       getSequence() { return _sequence; };
+        State*          getInitialState(){ return _initialState; };
+        State*          getGoal(){ return _goal; }
+        GraphSearch*    getStrategy(){ return searchStrategy; };
     private:
         Sequence*   _sequence;
         Grid*       _worldState;
         State*      _initialState;
         State*      _goal;
-        DepthFirstSearch* searchStrategy;
+        GraphSearch* searchStrategy;
     };
 }
 #endif /* defined(__CircleMandala__Agent__) */
