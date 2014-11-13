@@ -12,6 +12,7 @@
 #include "cinder/Vector.h"
 #include "cinder/cairo/Cairo.h"
 #include "GridDirections.h"
+#include "cinder/Timeline.h"
 
 class GridPoint;
 class Grid;
@@ -29,6 +30,8 @@ public:
     ci::ColorA      getColor() { return m_color; };
     
 	float 			fadeSpeed;
+    float           lerpLocation;
+    bool            hasTween;
 private:
 	GridPoint*	m_startPoint;
 	GridPoint*	m_endPoint;

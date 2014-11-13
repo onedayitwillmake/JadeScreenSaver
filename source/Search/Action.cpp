@@ -8,7 +8,7 @@
 
 #include "Action.h"
 #include "State.h"
-#include "Grid.h"
+#include "../Grid.h"
 
 namespace search {
     State* Action::execute( State* state, Grid* grid ) {

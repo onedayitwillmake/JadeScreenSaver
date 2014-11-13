@@ -10,7 +10,7 @@
 #define __CircleMandala__State__
 
 #include <iostream>
-#include "GridDirections.h"
+#include "../GridDirections.h"
 
 class GridPoint;
 class Grid;
@@ -24,8 +24,8 @@ namespace search {
         Grid*       grid;
         GRID_DIRECTION direction;
         
-        BOOL        isEqual( State &other );
-        BOOL        operator!=( const State &other ) const;
+        bool        isEqual( State &other );
+        bool        operator!=( const State &other ) const;
     };
 }
 #endif /* defined(__CircleMandala__State__) */

@@ -15,9 +15,9 @@
 #include "Action.h"
 #include "Result.h"
 #include "State.h"
-#include "Grid.h"
-#include "DepthFirstSearch.h"
-#include "GraphSearch.h"
+#include "../Grid.h"
+#include "Strategies/DepthFirstSearch.h"
+#include "Strategies/GraphSearch.h"
 
 namespace search {
     class Agent {

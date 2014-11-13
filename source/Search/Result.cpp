@@ -9,8 +9,8 @@
 #include "Result.h"
 #include "State.h"
 #include "Action.h"
-#include "Grid.h"
-#include "GridPoint.h"
+#include "../Grid.h"
+#include "../GridPoint.h"
 
 namespace search{
     State* Result::execute(){

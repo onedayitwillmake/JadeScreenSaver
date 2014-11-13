@@ -10,8 +10,8 @@
 #define CircleMandala_Comparators_h
 
 #include "State.h"
-#include "Grid.h"
-#include "GridPoint.h"
+#include "../Grid.h"
+#include "../GridPoint.h"
 #include "cinder/Rand.h"
 
 namespace search {

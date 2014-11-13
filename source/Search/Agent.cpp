@@ -7,8 +7,8 @@
 //
 
 #include "Agent.h"
-#include "DepthFirstSearch.h"
-#include "GraphSearch.h"
+#include "Strategies/DepthFirstSearch.h"
+#include "Strategies/GraphSearch.h"
 
 namespace search {
     Agent::Agent( State* anInitialState, State* aGoal, Grid* grid ) {

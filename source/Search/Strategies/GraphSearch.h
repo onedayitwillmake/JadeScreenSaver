@@ -9,9 +9,9 @@
 #ifndef __CircleMandala__GraphSearch__
 #define __CircleMandala__GraphSearch__
 
-#include "State.h"
-#include "Grid.h"
-#include "Sequence.h"
+#include "../State.h"
+#include "../../Grid.h"
+#include "../Sequence.h"
 
 namespace search {
     class GraphSearch {

@@ -18,7 +18,7 @@
 #include "Petal.h"
 #include "Grid.h"
 #include "Search/Agent.h"
-#include "State.h"
+#include "Search/State.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -55,6 +55,7 @@ public:
     
     float hue;
     ci::ColorA flowerColor;
+    int aa;
     
     // SEARCH
     search::Agent* _agent;
@@ -62,7 +63,9 @@ public:
 
 void JadeFlower::prepareSettings( Settings *settings ) {
 	settings->setAlwaysOnTop( true );
-	settings->setFrameRate( 5 );
+	settings->setFrameRate( 30 );
+    aa = 0;
+    
 }
 void JadeFlower::setup(){
     ci::Vec2i spacing = ci::Vec2i(44, 26);
@@ -116,6 +119,7 @@ void JadeFlower::forceFocus(){
 
 void JadeFlower::keyDown( KeyEvent event )
 {
+
 	if( event.getCode() == KeyEvent::KEY_f ) {
 		setFullScreen( ! isFullScreen() );
 	}
@@ -161,7 +165,8 @@ void JadeFlower::keyDown( KeyEvent event )
 //            }
 //        }
         
-                _agent->advance();
+        
+        _agent->advance();
         hue = ci::math<float>::fmod(hue + ci::randFloat(0.001f, 0.01f), 1.0f );
         flowerColor = ci::ColorA( ci::CM_HSV, hue, 1, 1, 0.60f );
 
@@ -173,10 +178,13 @@ void JadeFlower::keyDown( KeyEvent event )
 
     }
 	else if( event.getChar() == 's' ) {
+        aa = 3;
+//        cairo::Context .setAntiAlias(3);
 //		cairo::Context ctx( cairo::SurfaceSvg( getHomeDirectory() / "CairoBasicShot.svg", getWindowWidth(), getWindowHeight() ) );
 //		renderScene( ctx );
 	}
 	else if( event.getChar() == 'e' ) {
+        aa = 2;
 //		cairo::Context ctx( cairo::SurfaceEps( getHomeDirectory() / "CairoBasicShot.eps", getWindowWidth(), getWindowHeight() ) );
 //		renderScene( ctx );
 	}
@@ -187,6 +195,7 @@ void JadeFlower::keyDown( KeyEvent event )
 	else if( event.getChar() == 'd' ) {
 //		cairo::Context ctx( cairo::SurfacePdf( getHomeDirectory() / "CairoBasicShot.pdf", getWindowWidth(), getWindowHeight() ) );
 //		renderScene( ctx );
+        aa = 1;
 	}
     else if( event.getChar() == 'c' ) {
     	m_petals.clear();
@@ -210,6 +219,18 @@ void JadeFlower::mouseMove( MouseEvent event ) {
         Constants::Petal::C1_RADIUS_SCALE = p1;
         Constants::Petal::C2_RADIUS_SCALE = p2;
     }
+    
+//    std::cout << Constants::Petal::C1_RADIUS_SCALE << std::endl;
+    std::cout
+    << "C1_LERP_FACTOR:"
+    << Constants::Petal::C1_LERP_FACTOR
+    << " C2_LERP_FACTOR:"
+    << Constants::Petal::C2_LERP_FACTOR
+    << " C1_RADIUS_SCALE:"
+    << Constants::Petal::C1_RADIUS_SCALE
+    << " C2_RADIUS_SCALE:"
+    << Constants::Petal::C2_RADIUS_SCALE
+    << std::endl;
 }
 
 void JadeFlower::mouseDown( MouseEvent event ) {
@@ -265,6 +286,7 @@ void JadeFlower::renderBackground( cairo::Context &ctx ) {
 	radialGrad.addColorStop( 1, Color( 0.6, 0.6, 0.6 ) );
 	ctx.setSource( radialGrad );
 	ctx.paint();
+
 }
 
 
@@ -273,12 +295,12 @@ void JadeFlower::renderGrid( cairo::Context &ctx ) {
     int rowCount = _grid->getRowCount();
 
     ctx.newPath();
-    ctx.setSource( Color( 0.5, 0.5, 0.5 ) );
+    ctx.setSource( Color( 0.8, 0.8, 0.8 ) );
 //    ctx.setSource( Color( 0.1, 0.1, 0.1 ) );
     for( int x = 0; x < columnCount; x++ ) {
         for( int y = 0; y < rowCount; y++ ) {
             GridPoint* point = _grid->getGridPointAt(x, y);
-            if( point->isPermeable() ) continue;
+//            if( point->isPermeable() ) continue;
             
             ctx.circle( point->pixelPosition.x, point->pixelPosition.y, 2);
         }
@@ -378,7 +400,6 @@ void JadeFlower::resetGoal() {
             goal = potentialGoal;
         }
     }
-    
     _agent->setGoal( new search::State(goal, _grid ) );
 }
 
@@ -386,6 +407,7 @@ void JadeFlower::draw() {
 //	gl::clear( ci::ColorA::white())
 	// render the scene straight to the window
 	cairo::Context ctx( cairo::createWindowSurface() );
+    ctx.setAntiAlias(aa);
 	renderBackground( ctx );
 	renderGrid( ctx );
 	renderScene( ctx );

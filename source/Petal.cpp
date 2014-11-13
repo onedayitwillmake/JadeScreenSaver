@@ -7,15 +7,10 @@
 
 
 #include "Petal.h"
-#include "cinder/cairo/Cairo.h"
-#include "cinder/ip/Fill.h"
+#include "cinder/app/App.h"
 #include "cinder/Rand.h"
-#include "cinder/Utilities.h"
-#include "cinder/Color.h"
-#include "cinder/Vector.h"
-#include "cinder/CinderMath.h"
-#include "GridPoint.h"
 #include "Constants.h"
+
 
 float mRadius = 50.0f;
 
@@ -25,8 +20,9 @@ Petal::Petal( GridPoint* startPoint, GridPoint* endPoint, GRID_DIRECTION directi
 	m_direction = direction;
 	m_color = color;
 
-	fadeSpeed = ci::Rand::randFloat(0.98f, 0.995f);
-
+    fadeSpeed = 1.0f;//ci::Rand::randFloat(0.8f, 0.9f);
+    lerpLocation = 1.0f;
+    hasTween = false;
 }
 
 Petal::~Petal() {
@@ -38,20 +34,26 @@ void Petal::destroy() {
     m_startPoint = NULL;
 }
 void Petal::makePath( ci::cairo::Context &ctx ) {
+    lerpLocation *= ci::Rand::randFloat(0.6f, 0.99f);
+    
 	using namespace Constants::Petal;
-
+    using namespace ci;
+    using namespace ci::app;
+    using namespace std;
+    
+//    if( !hasTween ) {
+//        timeline().apply( &lerpLocation, 1.0f, 2.0f, EaseInAtan(1));
+//        hasTween = true;
+//    }
+    
 	ci::Vec2f start = m_startPoint->pixelPosition;
-	ci::Vec2f end = m_endPoint->pixelPosition;;
-	ci::Vec2f delta = (m_endPoint->pixelPosition-m_startPoint->pixelPosition) * 0.5f;
-	ci::Vec2f center = start+delta;
+	ci::Vec2f end = m_endPoint->pixelPosition;
+	ci::Vec2f delta = m_startPoint->pixelPosition + (m_endPoint->pixelPosition-m_startPoint->pixelPosition) * (1.0f - lerpLocation);
+    end = delta;
 
+    
 	float deltaRadius = start.distance( m_endPoint->pixelPosition );
-
-
 	float petalAngle = ci::math<float>::atan2(start.y - m_endPoint->pixelPosition.y, start.x - m_endPoint->pixelPosition.x );
-
-//    std::cout << "Petal\t" << "Angle: " << ci::toDegrees(petalAngle) << " Petal: " << (int)m_direction << std::endl;
-
 
 	ctx.newSubPath();
 	static float out = 90.0f;
@@ -69,11 +71,7 @@ void Petal::makePath( ci::cairo::Context &ctx ) {
 					(c2Center.x) + ci::math<float>::cos( petalAngle + ci::toRadians(out) * sign ) * deltaRadius * C2_RADIUS_SCALE,
 					(c2Center.y) + ci::math<float>::sin( petalAngle + ci::toRadians(out) * sign ) * deltaRadius * C2_RADIUS_SCALE
 				);
-		m_c3 = m_endPoint->pixelPosition; //getEndPoint( petalAngle );
-
-//		m_c1 = start;
-//		m_c2 = start + delta;
-
+		m_c3 = end;
 		ctx.curveTo(m_c1, m_c2, m_c3);
 	}
 }
@@ -85,9 +83,11 @@ void Petal::draw( ci::cairo::Context &ctx ) {
 	makePath( ctx );
 	ctx.stroke();
 
+    return;
+    
 	ci::Vec2f start = m_startPoint->pixelPosition;
-		ci::Vec2f delta = (m_endPoint->pixelPosition-m_startPoint->pixelPosition) * 0.5f;
-		ci::Vec2f center = start+delta;
+    ci::Vec2f delta = (m_endPoint->pixelPosition-m_startPoint->pixelPosition) * 0.5f;
+    ci::Vec2f center = start+delta;
 
 	ctx.newPath();
 	ctx.setSource( m_color * 0.5f );

@@ -7,8 +7,8 @@
 //
 
 #include "GraphSearch.h"
-#include "Action.h"
-#include "GridDirections.h"
+#include "../Action.h"
+#include "../../GridDirections.h"
 #include <array>
 #include <iterator>
 #include <chrono>       // std::chrono::system_clock

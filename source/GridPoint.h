@@ -10,6 +10,7 @@
 #define __CircleMandala__GridPoint__
 
 #include <iostream>
+#include <map>
 #include "cinder/Vector.h"
 #include "GridDirections.h"
 

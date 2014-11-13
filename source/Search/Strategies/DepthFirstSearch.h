@@ -10,9 +10,9 @@
 #define __CircleMandala__DepthFirstSearch__
 
 #include <iostream>
-#include "State.h"
-#include "Grid.h"
-#include "Sequence.h"
+#include "../State.h"
+#include "../../Grid.h"
+#include "../Sequence.h"
 
 namespace search {
     class DepthFirstSearch {
